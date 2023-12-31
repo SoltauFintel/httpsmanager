@@ -37,4 +37,15 @@ public class Domain {
     public void setCertificateName(String certificateName) {
         this.certificateName = certificateName;
     }
+
+    public String sort() {
+        int dots = 0;
+        for (int i = 0; i < publicDomain.length(); i++) {
+            char c = publicDomain.charAt(i);
+            if (c == '.') {
+                dots++;
+            }
+        }
+        return dots + "." + publicDomain.toLowerCase();
+    }
 }
