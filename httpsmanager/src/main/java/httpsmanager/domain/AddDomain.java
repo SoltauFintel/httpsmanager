@@ -15,6 +15,7 @@ public class AddDomain extends Page {
             new DomainAccess().save(d);
             ctx.redirect("/domain");
         } else {
+            put("title", "Domain hinzufügen");
             put("certificateName", new AppConfig().get("default-certificate-name"));
         }
     }

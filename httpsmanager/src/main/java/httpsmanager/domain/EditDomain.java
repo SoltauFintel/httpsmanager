@@ -18,6 +18,7 @@ public class EditDomain extends Page {
             new DomainAccess().save(d);
             ctx.redirect("/domain");
         } else {
+            put("title", "Domain bearbeiten");
             put("id", esc(d.getId()));
             put("publicDomain", esc(d.getPublicDomain()));
             put("internalDomain", esc(d.getInternalDomain()));

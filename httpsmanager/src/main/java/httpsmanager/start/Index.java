@@ -7,6 +7,7 @@ public class Index extends Page {
 
     @Override
     protected void execute() {
+        put("title", "https manager");
         put("login", esc(Auth.auth.getService(ctx).getLogin()));
     }
 }

@@ -13,6 +13,7 @@ public class DomainList extends Page {
     protected void execute() {
         List<Domain> domains = new DomainAccess().list();
 
+        put("title", "Domains");
         DataList list = list("domains");
         for (Domain d : domains) {
             DataMap map = list.add();

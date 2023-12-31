@@ -10,14 +10,15 @@
         <table class="table table-striped table-hover ntabelle">
             <tr>
                 <th>Öffentlicher Domain</th>
-                <th>Interne Domain</th>
+                <th>internes Ziel</th>
                 <th></th>
             </tr>
             {{each e in domains}}
                 <tr>
                     <td><a href="/domain/{{e.id}}/edit">{{e.publicDomain}}</a></td>
                     <td>{{e.internalDomain}}</td>
-                    <td><a href="{{e.deletelink}}" onclick="return confirm('Domain-Eintrag {{e.publicDomain}} löschen?')">Löschen</a></td>
+                    <td><a href="{{e.deletelink}}" onclick="return confirm('Domain-Eintrag {{e.publicDomain}} löschen?')" class="btn btn-xs btn-danger"
+                        title="Löschen"><i class="fa fa-trash"></i></a></td>
                 </tr>
             {{/each}}
         </table>
