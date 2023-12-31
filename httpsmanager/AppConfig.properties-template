@@ -1,3 +1,10 @@
 port=8080
 development=true
 app.name=httpsmanager
+
+user.login=
+user.salt=
+user.password=
+user.mail=
+# at least 7000
+encryption-frequency=
