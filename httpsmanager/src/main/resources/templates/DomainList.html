@@ -15,7 +15,7 @@
             </tr>
             {{each e in domains}}
                 <tr>
-                    <td><a href="/domain/{{e.id}}/edit">{{e.publicDomain}}</a></td>
+                    <td><a href="/domain/{{e.id}}/edit"{{if e.root}} style="font-weight: bold;"{{/if}}>{{e.publicDomain}}</a></td>
                     <td>{{e.internalDomain}}</td>
                     <td><a href="{{e.deletelink}}" onclick="return confirm('Domain-Eintrag {{e.publicDomain}} löschen?')" class="btn btn-xs btn-danger"
                         title="Löschen"><i class="fa fa-trash"></i></a></td>

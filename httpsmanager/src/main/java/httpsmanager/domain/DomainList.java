@@ -21,6 +21,7 @@ public class DomainList extends Page {
             map.put("publicDomain", esc(d.getPublicDomain()));
             map.put("internalDomain", esc(d.getInternalDomain()));
             map.put("certificateName", esc(d.getCertificateName()));
+            map.put("root", d.isRoot());
             map.put("deletelink", esc("/domain/" + d.getId() + "/delete"));
         }
         putInt("n", domains.size());

@@ -12,6 +12,7 @@ public class AddDomain extends Page {
             d.setPublicDomain(ctx.formParam("publicDomain"));
             d.setInternalDomain(ctx.formParam("internalDomain"));
             d.setCertificateName(ctx.formParam("certificateName"));
+            d.setRoot("on".equals(ctx.formParam("root")));
             new DomainAccess().save(d);
             ctx.redirect("/domain");
         } else {

@@ -5,6 +5,7 @@ public class Domain {
     private String publicDomain;
     private String internalDomain;
     private String certificateName;
+    private boolean root;
     
     public String getId() {
         return id;
@@ -36,6 +37,14 @@ public class Domain {
 
     public void setCertificateName(String certificateName) {
         this.certificateName = certificateName;
+    }
+
+    public boolean isRoot() {
+        return root;
+    }
+
+    public void setRoot(boolean root) {
+        this.root = root;
     }
 
     public String sort() {
