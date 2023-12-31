@@ -3,8 +3,13 @@ package httpsmanager;
 import github.soltaufintel.amalia.mail.MailSender;
 import github.soltaufintel.amalia.web.action.Action;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
+import github.soltaufintel.amalia.web.config.AppConfig;
 import github.soltaufintel.amalia.web.route.RouteDefinitions;
 import httpsmanager.auth.SimpleAuth;
+import httpsmanager.docker.AbstractDocker;
+import httpsmanager.docker.ContainerList;
+import httpsmanager.docker.UnixDocker;
+import httpsmanager.docker.WindowsDocker;
 import httpsmanager.domain.AddDomain;
 import httpsmanager.domain.DeleteDomain;
 import httpsmanager.domain.DomainList;
@@ -13,12 +18,16 @@ import httpsmanager.start.Index;
 
 public class HttpsManagerApp extends RouteDefinitions {
     public static final String VERSION = "0.1.0";
+    public static AbstractDocker docker;
+    
+    // TODO prüfen, ob man sich mit falschem Login trotzdem anmelden kann!!
     
     public static void main(String[] args) {
         MailSender.active = false;
         new WebAppBuilder(VERSION)
             .withAuth(new SimpleAuth())
             .withTemplatesFolders(HttpsManagerApp.class, "/templates")
+//            .withInitializer(config -> initDocker(config))
             .withRoutes(new HttpsManagerApp())
             .withRoutes(new MyPingRouteDefinition())
             .build()
@@ -34,6 +43,9 @@ public class HttpsManagerApp extends RouteDefinitions {
         get("/domain/:id/delete", DeleteDomain.class);
         form("/domain/add", AddDomain.class);
         get("/domain", DomainList.class);
+        
+        // Docker
+        get("/container", ContainerList.class);
     }
 
     public static class MyPingRouteDefinition extends RouteDefinitions {
@@ -58,6 +70,14 @@ public class HttpsManagerApp extends RouteDefinitions {
             protected String render() {
                 return "pong"; // TODO Amalia
             }
+        }
+    }
+    
+    public static void initDocker(AppConfig config) {
+        if (config.isDevelopment()) {
+            docker = new WindowsDocker();
+        } else {
+            docker = new UnixDocker();
         }
     }
 }
