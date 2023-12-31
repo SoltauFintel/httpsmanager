@@ -8,6 +8,8 @@ import github.soltaufintel.amalia.web.route.RouteDefinitions;
 import httpsmanager.auth.SimpleAuth;
 import httpsmanager.docker.AbstractDocker;
 import httpsmanager.docker.ContainerList;
+import httpsmanager.docker.StartContainers;
+import httpsmanager.docker.StopContainers;
 import httpsmanager.docker.UnixDocker;
 import httpsmanager.docker.WindowsDocker;
 import httpsmanager.domain.AddDomain;
@@ -20,14 +22,12 @@ public class HttpsManagerApp extends RouteDefinitions {
     public static final String VERSION = "0.1.0";
     public static AbstractDocker docker;
     
-    // TODO prüfen, ob man sich mit falschem Login trotzdem anmelden kann!!
-    
     public static void main(String[] args) {
         MailSender.active = false;
         new WebAppBuilder(VERSION)
             .withAuth(new SimpleAuth())
             .withTemplatesFolders(HttpsManagerApp.class, "/templates")
-//            .withInitializer(config -> initDocker(config))
+            .withInitializer(config -> initDocker(config))
             .withRoutes(new HttpsManagerApp())
             .withRoutes(new MyPingRouteDefinition())
             .build()
@@ -46,6 +46,8 @@ public class HttpsManagerApp extends RouteDefinitions {
         
         // Docker
         get("/container", ContainerList.class);
+        get("/start/:phase", StartContainers.class);
+        get("/stop", StopContainers.class);
     }
 
     public static class MyPingRouteDefinition extends RouteDefinitions {

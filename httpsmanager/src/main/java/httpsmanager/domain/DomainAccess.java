@@ -27,7 +27,7 @@ public class DomainAccess {
                 }
             }
         }
-        ret.sort((a, b) -> a.sort().compareTo(b.sort()));
+        ret.sort((a, b) -> a.sort().compareToIgnoreCase(b.sort()));
         return ret;
     }
 

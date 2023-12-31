@@ -48,13 +48,6 @@ public class Domain {
     }
 
     public String sort() {
-        int dots = 0;
-        for (int i = 0; i < publicDomain.length(); i++) {
-            char c = publicDomain.charAt(i);
-            if (c == '.') {
-                dots++;
-            }
-        }
-        return dots + "." + publicDomain.toLowerCase();
+        return (root ? "1" : "2") + publicDomain;
     }
 }

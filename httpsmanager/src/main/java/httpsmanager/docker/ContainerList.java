@@ -7,7 +7,6 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataList;
 
 import github.soltaufintel.amalia.web.action.Page;
-import github.soltaufintel.amalia.web.config.AppConfig;
 import httpsmanager.HttpsManagerApp;
 
 public class ContainerList extends Page {
@@ -16,7 +15,6 @@ public class ContainerList extends Page {
     protected void execute() {
         Logger.info("/container");
         
-        HttpsManagerApp.initDocker(new AppConfig());
         List<String> containerNames = HttpsManagerApp.docker.getContainerNames();
         
         put("title", "Docker Container");

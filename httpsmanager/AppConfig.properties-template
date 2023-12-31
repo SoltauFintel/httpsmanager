@@ -12,4 +12,19 @@ encryption-frequency=
 # can be empty
 default-certificate-name=
 
+# base folder where httpsman can save its files
 save-folder=.
+
+# web folder for html files for nginx on host, read-only
+d.web=
+
+# filename with path on host for nginx default.conf file, modified by httpsmanager
+d.default.conf=
+
+# work dir for certbot files on host, read-write, modified by certbot, not modified by httpsmanager
+d.certbot=
+
+d.web-container=web
+d.web-image=nginx
+d.certbot-container=certbot
+d.certbot-image=certbot/certbot
