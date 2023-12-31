@@ -11,7 +11,6 @@ public class SimpleAuthRoutes extends RouteDefinitions implements IAuthRoutes {
     @Override
     public void routes() {
         setupAuthFilter();
-        addNotProtected("/auth");
         get("/auth/logout", LogoutAction.class);
     }
 
