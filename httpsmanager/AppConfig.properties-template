@@ -8,3 +8,8 @@ user.password=
 user.mail=
 # at least 7000
 encryption-frequency=
+
+# can be empty
+default-certificate-name=
+
+save-folder=.
