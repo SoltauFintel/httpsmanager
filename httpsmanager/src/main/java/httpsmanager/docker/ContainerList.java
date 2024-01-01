@@ -16,15 +16,11 @@ public class ContainerList extends Page {
     @Override
     protected void execute() {
         List<String> containerNames = HttpsManagerApp.docker.getContainerNames();
+        
         put("title", "Docker Container");
         DataList list = list("containers");
         for (String name : containerNames) {
             list.add().put("name", esc(name));
         }
-
-        String certificates = ""; //HttpsManagerApp.docker.certificates();   Hierfür eine Extrafunktion machen
-        put("certificates", esc(certificates));
-        
-        // TODO Die Buttons auf die Startseite bringen. Hier nur Containerliste ausgeben.
     }
 }
