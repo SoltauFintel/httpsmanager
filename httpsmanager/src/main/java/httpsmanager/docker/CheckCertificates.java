@@ -12,7 +12,7 @@ public class CheckCertificates extends Page {
     protected void execute() {
         DataList list = list("domains");
         put("title", "SSL Zertifikate aller Domains prüfen");
-        Certificate cer = new Certificate();
+        CertificateService cer = new CertificateService();
         new DomainAccess().list().forEach(d -> {
             String state = "?";
             boolean ok = false;

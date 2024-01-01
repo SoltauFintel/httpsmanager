@@ -24,11 +24,11 @@ import org.apache.http.ssl.SSLContexts;
 import org.apache.http.ssl.TrustStrategy;
 import org.pmw.tinylog.Logger;
 
-public class Certificate {
+public class CertificateService {
     private String certNotAfterDate;
 
     public static void main(String[] args) throws Exception {
-        new Certificate().checkHttpsUrl("https://tv.mwvb.de", true, true);
+        new CertificateService().checkHttpsUrl("https://tv.mwvb.de", true, true);
     }
 
     public String checkHttpsUrl(String url, boolean letsEncrypt, boolean okResponse) throws Exception {
