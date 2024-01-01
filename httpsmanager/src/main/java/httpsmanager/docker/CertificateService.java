@@ -27,10 +27,6 @@ import org.pmw.tinylog.Logger;
 public class CertificateService {
     private String certNotAfterDate;
 
-    public static void main(String[] args) throws Exception {
-        new CertificateService().checkHttpsUrl("https://tv.mwvb.de", true, true);
-    }
-
     public String checkHttpsUrl(String url, boolean letsEncrypt, boolean okResponse) throws Exception {
         certNotAfterDate = "?";
         TrustStrategy acceptingTrustStrategy = (cert, authType) -> {
