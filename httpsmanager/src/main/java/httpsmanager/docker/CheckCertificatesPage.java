@@ -6,7 +6,7 @@ import com.github.template72.data.DataMap;
 import github.soltaufintel.amalia.web.action.Page;
 import httpsmanager.domain.DomainAccess;
 
-public class CheckCertificates extends Page {
+public class CheckCertificatesPage extends Page {
 
     @Override
     protected void execute() {

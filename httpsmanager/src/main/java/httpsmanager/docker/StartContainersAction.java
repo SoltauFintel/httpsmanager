@@ -5,7 +5,7 @@ import org.pmw.tinylog.Logger;
 import github.soltaufintel.amalia.web.action.Action;
 import httpsmanager.HttpsManagerApp;
 
-public class StartContainers extends Action {
+public class StartContainersAction extends Action {
 
     @Override
     protected void execute() {

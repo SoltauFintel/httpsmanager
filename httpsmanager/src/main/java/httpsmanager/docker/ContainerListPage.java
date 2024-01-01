@@ -11,7 +11,7 @@ import httpsmanager.HttpsManagerApp;
  * Gibt die Namen aller laufenden Docker Container aus.
  * Prüfen, ob überhaupt Zugriff auf Docker möglich ist.
  */
-public class ContainerList extends Page {
+public class ContainerListPage extends Page {
 
     @Override
     protected void execute() {
