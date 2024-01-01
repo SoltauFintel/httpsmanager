@@ -40,9 +40,9 @@ public abstract class AbstractDocker {
     
     protected abstract DockerClient createClient();
     
-    public List<String> getContainerNames() {
+    public List<String> getContainerNames(boolean all) {
         Logger.info("docker ps ...");
-        List<Container> r = docker.listContainersCmd().withShowAll(false).exec();
+        List<Container> r = docker.listContainersCmd().withShowAll(all).exec();
         return r.stream().map(c -> {
             if (c.getNames() != null && c.getNames().length > 0) {
                 String ret = c.getNames()[0];
@@ -283,7 +283,7 @@ public abstract class AbstractDocker {
                 Thread.sleep(5 * 1000);
             } catch (Exception e) {
             }
-            return "response: " + logs(id);
+            return "`certbot certificates` response: \n" + logs(id);
         } catch (Exception e) {
             Logger.error(e);
             return e.getMessage();

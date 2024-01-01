@@ -27,6 +27,6 @@ public class StartContainers extends Action {
             Logger.info("certbot container not needed");
         }
 
-        ctx.redirect("/container");
+        ctx.redirect("/");
     }
 }

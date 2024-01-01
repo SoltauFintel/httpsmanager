@@ -15,7 +15,7 @@ public class ContainerList extends Page {
 
     @Override
     protected void execute() {
-        List<String> containerNames = HttpsManagerApp.docker.getContainerNames();
+        List<String> containerNames = HttpsManagerApp.docker.getContainerNames(false);
         
         put("title", "Docker Container");
         DataList list = list("containers");

@@ -16,6 +16,6 @@ public class StopContainers extends Action {
         
         Logger.info("  deleting containers finished");
         
-        ctx.redirect("/container");
+        ctx.redirect("/");
     }
 }
