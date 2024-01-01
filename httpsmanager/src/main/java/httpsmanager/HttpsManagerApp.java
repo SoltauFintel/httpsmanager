@@ -10,7 +10,6 @@ import httpsmanager.docker.AbstractDocker;
 import httpsmanager.docker.CertificatesPage;
 import httpsmanager.docker.CheckCertificates;
 import httpsmanager.docker.ContainerList;
-import httpsmanager.docker.DeleteOldCertbotContainers;
 import httpsmanager.docker.Renewal;
 import httpsmanager.docker.StartContainers;
 import httpsmanager.docker.StopContainers;
@@ -53,7 +52,6 @@ public class HttpsManagerApp extends RouteDefinitions {
         get("/start/:phase", StartContainers.class);
         get("/stop", StopContainers.class);
         get("/certificates", CertificatesPage.class);
-        get("/delete-old-certbot-containers", DeleteOldCertbotContainers.class);
         get("/check-certificates", CheckCertificates.class);
         get("/renewal", Renewal.class);
     }
