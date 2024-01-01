@@ -11,6 +11,7 @@ import httpsmanager.docker.CertificatesPage;
 import httpsmanager.docker.CheckCertificates;
 import httpsmanager.docker.ContainerList;
 import httpsmanager.docker.DeleteOldCertbotContainers;
+import httpsmanager.docker.Renewal;
 import httpsmanager.docker.StartContainers;
 import httpsmanager.docker.StopContainers;
 import httpsmanager.docker.UnixDocker;
@@ -54,6 +55,7 @@ public class HttpsManagerApp extends RouteDefinitions {
         get("/certificates", CertificatesPage.class);
         get("/delete-old-certbot-containers", DeleteOldCertbotContainers.class);
         get("/check-certificates", CheckCertificates.class);
+        get("/renewal", Renewal.class);
     }
 
     public static class MyPingRouteDefinition extends RouteDefinitions {
