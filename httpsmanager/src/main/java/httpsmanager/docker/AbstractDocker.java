@@ -273,20 +273,40 @@ public abstract class AbstractDocker {
         return file;
     }
     
-    public String certificates() {
+    public String runCertbot(String cmd) {
         try {
-            String id = docker.createContainerCmd(certbotImage())
-                .withCmd("certificates")
+            String image = certbotImage();
+            String id = docker.createContainerCmd(image)
+                .withCmd(cmd.split(" "))
                 .withHostConfig(new HostConfig().withBinds(addCertbotBinds(new ArrayList<>())))
                 .exec().getId();
-            Logger.info("created container " + id);
+            Logger.info("created " + image + " container " + id);
+            
             docker.startContainerCmd(id).exec();
-            try {
-                Thread.sleep(5 * 1000);
-            } catch (Exception e) {
+
+            String logs = "";
+            for (int i = 1; i <= 6; i++) {
+                try {
+                    Thread.sleep(2 * 1000);
+                } catch (Exception e) {
+                }
+                logs = logs(id);
+                if (logs != null && !logs.isEmpty()) {
+                    break;
+                }
             }
-            return "`certbot certificates` response: \n" + logs(id);
-            // TODO Ich sollte besser noch zeitverzögert den Container löschen (im Thread). Derzeit nur über DeleteOldCertbotContainers gelöst.
+            
+            new Thread(() -> {
+                try {
+                    Thread.sleep(10 * 60 * 1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                docker.removeContainerCmd(id).withForce(Boolean.TRUE).exec();
+                Logger.info("cleanup: " + image + " container gelöscht: " + id);
+            }).start();
+            
+            return logs;
         } catch (Exception e) {
             Logger.error(e);
             return e.getMessage();

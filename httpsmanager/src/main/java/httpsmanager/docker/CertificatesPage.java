@@ -7,7 +7,7 @@ public class CertificatesPage extends Page {
 
     @Override
     protected void execute() {
-        String certificates = HttpsManagerApp.docker.certificates();
+        String certificates = "`certbot certificates` response: \n" + HttpsManagerApp.docker.runCertbot("certificates");
         put("certificates", esc(certificates));
         put("title", "certificates");
     }
