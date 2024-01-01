@@ -9,5 +9,6 @@ public class CertificatesPage extends Page {
     protected void execute() {
         String certificates = HttpsManagerApp.docker.certificates();
         put("certificates", esc(certificates));
+        put("title", "certificates");
     }
 }

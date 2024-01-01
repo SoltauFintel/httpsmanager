@@ -22,17 +22,21 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.ssl.TrustStrategy;
+import org.pmw.tinylog.Logger;
 
 public class Certificate {
+    private String certNotAfterDate;
 
     public static void main(String[] args) throws Exception {
         new Certificate().checkHttpsUrl("https://tv.mwvb.de", true, true);
     }
 
-    public void checkHttpsUrl(String url, boolean letsEncrypt, boolean okResponse) throws Exception {
+    public String checkHttpsUrl(String url, boolean letsEncrypt, boolean okResponse) throws Exception {
+        certNotAfterDate = "?";
         TrustStrategy acceptingTrustStrategy = (cert, authType) -> {
             boolean found = false;
             for (X509Certificate c : cert) {
+                Logger.info(c.getIssuerX500Principal().getName() + ", " + c.getNotAfter().toString());
                 // most important test:
                 // Should never fail for letsencrypt certificates because certbot is in cron.d
                 // and runs ~every month.
@@ -43,6 +47,7 @@ public class Certificate {
 
                 if (letsEncrypt && c.getIssuerX500Principal().getName().toLowerCase().contains("let's encrypt")) {
                     found = true;
+                    certNotAfterDate = c.getNotAfter().toString();
                 }
             }
             if (!found) {
@@ -63,14 +68,14 @@ public class Certificate {
                 new HttpGet(url), HttpClientContext.create());
         int status = response.getStatusLine().getStatusCode();
         if (!(status >= 200 && status < 300)) {
-            throw new RuntimeException("status not ok: " + status + "\nSite `" + url + "` is not up?");
+            return "nicht ok: status " + status + (!"?".equals(certNotAfterDate) ? (", " + certNotAfterDate) : "");
         }
+        return "ok, " + certNotAfterDate;
     }
 
     private boolean expired(X509Certificate cert) {
         LocalDateTime now1 = LocalDateTime.now().plusWeeks(1);
         Date now = Date.from(now1.atZone(ZoneId.systemDefault()).toInstant()); // give us 1 week time to react
-        System.out.println(cert.getNotAfter());
         return cert.getNotAfter().before(now);
     }
 }

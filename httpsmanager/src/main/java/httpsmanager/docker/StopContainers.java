@@ -9,12 +9,13 @@ public class StopContainers extends Action {
 
     @Override
     protected void execute() {
-        Logger.info("deleting web+certbot containers...");
-
-        HttpsManagerApp.docker.deleteWebContainer();
-        HttpsManagerApp.docker.deleteCertbotContainer();
-        
-        Logger.info("  deleting containers finished");
+        new Thread(() -> {
+            HttpsManagerApp.docker.deleteWebContainer();
+            Logger.info("deleting web container finished");
+            HttpsManagerApp.docker.deleteCertbotContainer();
+            Logger.info("deleting certbot container finished");
+        }).start();
+        Logger.info("web+certbot Container löschen Anfrage angenommen");
         
         ctx.redirect("/");
     }

@@ -8,7 +8,9 @@ import github.soltaufintel.amalia.web.route.RouteDefinitions;
 import httpsmanager.auth.SimpleAuth;
 import httpsmanager.docker.AbstractDocker;
 import httpsmanager.docker.CertificatesPage;
+import httpsmanager.docker.CheckCertificates;
 import httpsmanager.docker.ContainerList;
+import httpsmanager.docker.DeleteOldCertbotContainers;
 import httpsmanager.docker.StartContainers;
 import httpsmanager.docker.StopContainers;
 import httpsmanager.docker.UnixDocker;
@@ -50,6 +52,8 @@ public class HttpsManagerApp extends RouteDefinitions {
         get("/start/:phase", StartContainers.class);
         get("/stop", StopContainers.class);
         get("/certificates", CertificatesPage.class);
+        get("/delete-old-certbot-containers", DeleteOldCertbotContainers.class);
+        get("/check-certificates", CheckCertificates.class);
     }
 
     public static class MyPingRouteDefinition extends RouteDefinitions {

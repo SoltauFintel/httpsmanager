@@ -1,0 +1,13 @@
+{{master: master}}
+
+<div class="row"> 
+    <div class="col-lg-12">
+        <h1 class="page-header">Zertifikate aller Domains prüfen</h1>
+
+        <ul>
+            {{each i in domains}}
+                <li>{{i.name}}: <span style="color: {{if i.ok}}#090{{else}}#900{{/if}};">{{i.state}}</span></li>
+            {{/each}}
+        </ul>
+    </div>
+</div>

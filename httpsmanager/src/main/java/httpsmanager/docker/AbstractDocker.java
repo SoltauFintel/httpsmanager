@@ -41,9 +41,7 @@ public abstract class AbstractDocker {
     protected abstract DockerClient createClient();
     
     public List<String> getContainerNames(boolean all) {
-        Logger.info("docker ps ...");
-        List<Container> r = docker.listContainersCmd().withShowAll(all).exec();
-        return r.stream().map(c -> {
+        return getContainers(all).stream().map(c -> {
             if (c.getNames() != null && c.getNames().length > 0) {
                 String ret = c.getNames()[0];
                 if (ret.startsWith("/")) {
@@ -54,7 +52,11 @@ public abstract class AbstractDocker {
             return "unknown";
         }).sorted().toList();
     }
-    
+
+    public List<Container> getContainers(boolean all) {
+        return docker.listContainersCmd().withShowAll(all).exec();
+    }
+
     public void deleteWebContainer() {
         try {
             String name = config.get("d.web-container", "web");
@@ -128,7 +130,7 @@ public abstract class AbstractDocker {
         docker.startContainerCmd(name).exec();
     }
 
-    private String certbotImage() {
+    public String certbotImage() {
         return config.get("d.certbot-image", "certbot/certbot");
     }
     
@@ -284,6 +286,7 @@ public abstract class AbstractDocker {
             } catch (Exception e) {
             }
             return "`certbot certificates` response: \n" + logs(id);
+            // TODO Ich sollte besser noch zeitverzögert den Container löschen (im Thread). Derzeit nur über DeleteOldCertbotContainers gelöst.
         } catch (Exception e) {
             Logger.error(e);
             return e.getMessage();
@@ -305,6 +308,14 @@ public abstract class AbstractDocker {
             return sb.toString();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+    
+    public void rmf(String container) {
+        try {
+            docker.removeContainerCmd(container).withForce(Boolean.TRUE).exec();
+        } catch (Exception e) {
+            Logger.error(e, "Error deleting container: " + container);
         }
     }
 }
