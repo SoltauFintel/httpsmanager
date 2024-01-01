@@ -5,15 +5,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
 import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.async.ResultCallback;
+import com.github.dockerjava.api.command.LogContainerCmd;
 import com.github.dockerjava.api.model.AccessMode;
 import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.ExposedPort;
+import com.github.dockerjava.api.model.Frame;
 import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.LogConfig;
 import com.github.dockerjava.api.model.PortBinding;
@@ -56,7 +60,7 @@ public abstract class AbstractDocker {
             String name = config.get("d.web-container", "web");
             docker.removeContainerCmd(name).withForce(Boolean.TRUE).exec();
         } catch (Exception e) {
-            Logger.error("Error removing web container: " + e.getMessage());
+            Logger.debug("Error removing web container: " + e.getMessage());
         }
     }
 
@@ -65,7 +69,7 @@ public abstract class AbstractDocker {
             String name = config.get("d.certbot-container", "certbot");
             docker.removeContainerCmd(name).withForce(Boolean.TRUE).exec();
         } catch (Exception e) {
-            Logger.error("Error removing certbot container: " + e.getMessage());
+            Logger.debug("Error removing certbot container: " + e.getMessage());
         }
     }
 
@@ -83,8 +87,7 @@ public abstract class AbstractDocker {
         List<Bind> binds = new ArrayList<>();
         binds.add(new Bind(config.get("d.web"), new Volume("/usr/share/nginx/html"), AccessMode.ro));
         binds.add(new Bind(config.get("d.default.conf"), new Volume("/etc/nginx/conf.d/default.conf"), AccessMode.ro));
-        addCertbotBinds(binds);
-        hc.withBinds(binds);
+        hc.withBinds(addCertbotBinds(binds));
 
         docker.createContainerCmd(image)
             .withName(name)
@@ -101,32 +104,32 @@ public abstract class AbstractDocker {
         return ret;
     }
 
-    private void addCertbotBinds(List<Bind> binds) {
+    private List<Bind> addCertbotBinds(List<Bind> binds) {
         binds.add(new Bind(config.get("d.certbot") + "/conf", new Volume("/etc/letsencrypt"), AccessMode.rw));
         binds.add(new Bind(config.get("d.certbot") + "/www", new Volume("/var/www/certbot"), AccessMode.rw));
+        return binds;
     }
     
     public void startCertbotContainer() {
-        String image = config.get("d.certbot-image", "certbot/certbot");
+        String image = certbotImage();
         String name = config.get("d.certbot-container", "certbot");
         
         String mail = config.get("d.mail");
         String domains = new DomainAccess().list().stream().map(i -> " -d " + i.getPublicDomain()).collect(Collectors.joining());
         String cmd = "certonly --email " + mail + " --webroot -w /var/www/certbot --force-renewal --agree-tos --non-interactive" + domains;
         Logger.info(cmd);
-        
-        HostConfig hc = new HostConfig().withRestartPolicy(RestartPolicy.alwaysRestart());
-        List<Bind> binds = new ArrayList<>();
-        addCertbotBinds(binds);
-        hc.withBinds(binds);
 
         docker.createContainerCmd(image)
             .withCmd(cmd.split(" "))
             .withName(name)
-            .withHostConfig(hc)
+            .withHostConfig(new HostConfig().withBinds(addCertbotBinds(new ArrayList<>())))
             .exec();
     
         docker.startContainerCmd(name).exec();
+    }
+
+    private String certbotImage() {
+        return config.get("d.certbot-image", "certbot/certbot");
     }
     
     /**
@@ -138,7 +141,9 @@ public abstract class AbstractDocker {
         write(phase, domains, true, sb);
         write(phase, domains, false, sb);
 
-        FileService.saveTextFile(getDefaultConfFile(), sb.toString());
+        File file = getDefaultConfFile();
+        FileService.saveTextFile(file, sb.toString());
+        Logger.info("Nginx configuration file updated: " + file.toString());
     }
     
     private void write(int phase, List<Domain> domains, boolean root, StringBuilder sb) {
@@ -151,6 +156,7 @@ public abstract class AbstractDocker {
     }
 
     private String getDefaultConfText(int phase, Domain d) {
+        // TODO vermutlich muss ich diese Texte noch änderbar machen
         if (phase == 0) {
             if (d.isRoot()) {
                 return """
@@ -263,5 +269,42 @@ public abstract class AbstractDocker {
         dn = dn.substring(o + 1); // should be "default.conf"
         File file = new File(config.get("save-folder"), dn);
         return file;
+    }
+    
+    public String certificates() {
+        try {
+            String id = docker.createContainerCmd(certbotImage())
+                .withCmd("certificates")
+                .withHostConfig(new HostConfig().withBinds(addCertbotBinds(new ArrayList<>())))
+                .exec().getId();
+            Logger.info("created container " + id);
+            docker.startContainerCmd(id).exec();
+            try {
+                Thread.sleep(5 * 1000);
+            } catch (Exception e) {
+            }
+            return "response: " + logs(id);
+        } catch (Exception e) {
+            Logger.error(e);
+            return e.getMessage();
+        }
+    }
+    
+    public String logs(String container) {
+        StringBuffer sb = new StringBuffer();
+        try {
+            LogContainerCmd logContainerCmd = docker.logContainerCmd(container);
+            logContainerCmd.withStdOut(true).withStdErr(true);
+            logContainerCmd.exec(new ResultCallback.Adapter<Frame>() {
+                @Override
+                public void onNext(Frame item) {
+                    sb.append(item.toString());
+                    sb.append("\n");
+                }
+            }).awaitCompletion(10, TimeUnit.SECONDS);
+            return sb.toString();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

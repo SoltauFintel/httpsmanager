@@ -10,8 +10,11 @@ public class StartContainers extends Action {
     @Override
     protected void execute() {
         int phase = Integer.parseInt(ctx.pathParam("phase"));
-        
+
         Logger.info("starting phase " + phase + "...");
+        HttpsManagerApp.docker.deleteWebContainer();
+        HttpsManagerApp.docker.deleteCertbotContainer();
+        
         HttpsManagerApp.docker.writeDefaultConf(phase);
         
         HttpsManagerApp.docker.startWebContainer();
