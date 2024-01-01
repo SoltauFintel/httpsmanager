@@ -5,7 +5,7 @@ import org.pmw.tinylog.Logger;
 import github.soltaufintel.amalia.web.action.Page;
 import httpsmanager.HttpsManagerApp;
 
-public class RenewalAction extends Page {
+public class RenewalPage extends Page {
 
     @Override
     protected void execute() {

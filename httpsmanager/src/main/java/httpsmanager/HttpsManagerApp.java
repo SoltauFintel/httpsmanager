@@ -10,7 +10,7 @@ import httpsmanager.docker.AbstractDocker;
 import httpsmanager.docker.CertificatesPage;
 import httpsmanager.docker.CheckCertificatesPage;
 import httpsmanager.docker.ContainerListPage;
-import httpsmanager.docker.RenewalAction;
+import httpsmanager.docker.RenewalPage;
 import httpsmanager.docker.StartContainersAction;
 import httpsmanager.docker.StopContainersAction;
 import httpsmanager.docker.UnixDocker;
@@ -53,7 +53,7 @@ public class HttpsManagerApp extends RouteDefinitions {
         get("/stop", StopContainersAction.class);
         get("/certificates", CertificatesPage.class);
         get("/check-certificates", CheckCertificatesPage.class);
-        get("/renewal", RenewalAction.class);
+        get("/renewal", RenewalPage.class);
     }
 
     public static class MyPingRouteDefinition extends RouteDefinitions {
