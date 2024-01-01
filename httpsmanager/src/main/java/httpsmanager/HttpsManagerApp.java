@@ -15,11 +15,11 @@ import httpsmanager.docker.StartContainersAction;
 import httpsmanager.docker.StopContainersAction;
 import httpsmanager.docker.UnixDocker;
 import httpsmanager.docker.WindowsDocker;
-import httpsmanager.domain.AddDomain;
-import httpsmanager.domain.DeleteDomain;
-import httpsmanager.domain.DomainList;
-import httpsmanager.domain.EditDomain;
-import httpsmanager.start.Index;
+import httpsmanager.domain.AddDomainPage;
+import httpsmanager.domain.DeleteDomainAction;
+import httpsmanager.domain.DomainListPage;
+import httpsmanager.domain.EditDomainPage;
+import httpsmanager.start.IndexPage;
 
 public class HttpsManagerApp extends RouteDefinitions {
     public static final String VERSION = "0.1.0";
@@ -39,13 +39,13 @@ public class HttpsManagerApp extends RouteDefinitions {
 
     @Override
     public void routes() {
-        get("/", Index.class);
+        get("/", IndexPage.class);
         
         // Domains
-        form("/domain/:id/edit", EditDomain.class);
-        get("/domain/:id/delete", DeleteDomain.class);
-        form("/domain/add", AddDomain.class);
-        get("/domain", DomainList.class);
+        form("/domain/:id/edit", EditDomainPage.class);
+        get("/domain/:id/delete", DeleteDomainAction.class);
+        form("/domain/add", AddDomainPage.class);
+        get("/domain", DomainListPage.class);
         
         // Docker
         get("/container", ContainerListPage.class);

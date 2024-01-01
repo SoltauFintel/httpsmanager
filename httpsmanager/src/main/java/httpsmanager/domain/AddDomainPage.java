@@ -3,7 +3,7 @@ package httpsmanager.domain;
 import github.soltaufintel.amalia.web.action.Page;
 import github.soltaufintel.amalia.web.config.AppConfig;
 
-public class AddDomain extends Page {
+public class AddDomainPage extends Page {
 
     @Override
     protected void execute() {

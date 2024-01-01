@@ -2,7 +2,7 @@ package httpsmanager.domain;
 
 import github.soltaufintel.amalia.web.action.Page;
 
-public class EditDomain extends Page {
+public class EditDomainPage extends Page {
 
     @Override
     protected void execute() {

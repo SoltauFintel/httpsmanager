@@ -7,7 +7,7 @@ import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Page;
 
-public class DomainList extends Page {
+public class DomainListPage extends Page {
 
     @Override
     protected void execute() {

@@ -4,7 +4,7 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.Action;
 
-public class DeleteDomain extends Action {
+public class DeleteDomainAction extends Action {
 
     @Override
     protected void execute() {
