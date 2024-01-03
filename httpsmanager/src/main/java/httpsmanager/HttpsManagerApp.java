@@ -8,6 +8,7 @@ import httpsmanager.auth.SimpleAuth;
 import httpsmanager.docker.AbstractDocker;
 import httpsmanager.docker.CertificatesPage;
 import httpsmanager.docker.CheckCertificatesPage;
+import httpsmanager.docker.CheckCertificatesTimer;
 import httpsmanager.docker.ContainerListPage;
 import httpsmanager.docker.RenewalPage;
 import httpsmanager.docker.RenewalTimer;
@@ -31,6 +32,7 @@ public class HttpsManagerApp extends RouteDefinitions {
             .withTemplatesFolders(HttpsManagerApp.class, "/templates")
             .withInitializer(config -> initDocker(config))
             .withInitializer(config -> new RenewalTimer().start())
+            .withInitializer(config -> new CheckCertificatesTimer().start())
             .withRoutes(new HttpsManagerApp())
             .withRoutes(new MyPingRouteDefinition())
             .build()

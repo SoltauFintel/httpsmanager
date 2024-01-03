@@ -48,7 +48,7 @@ public class RenewalTimer extends BaseTimer {
         new MailSender().send(mail, config);
     }
 
-    private String now() {
+    public static String now() {
         return DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm").format(LocalDateTime.now());
     }
 }
