@@ -28,3 +28,9 @@ d.web-container=web
 d.web-image=nginx
 d.certbot-container=certbot
 d.certbot-image=certbot/certbot
+
+mail.smtp-server=
+mail.username=
+mail.password=
+mail.from.mail-address=
+mail.send-to=
