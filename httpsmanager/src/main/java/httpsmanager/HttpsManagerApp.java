@@ -1,6 +1,5 @@
 package httpsmanager;
 
-import github.soltaufintel.amalia.mail.MailSender;
 import github.soltaufintel.amalia.web.action.Action;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
 import github.soltaufintel.amalia.web.config.AppConfig;
@@ -27,7 +26,6 @@ public class HttpsManagerApp extends RouteDefinitions {
     public static AbstractDocker docker;
     
     public static void main(String[] args) {
-        MailSender.active = false;
         new WebAppBuilder(VERSION)
             .withAuth(new SimpleAuth())
             .withTemplatesFolders(HttpsManagerApp.class, "/templates")
