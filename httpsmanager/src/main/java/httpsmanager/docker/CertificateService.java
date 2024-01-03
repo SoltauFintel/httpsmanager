@@ -2,6 +2,7 @@ package httpsmanager.docker;
 
 import java.net.URI;
 import java.security.cert.X509Certificate;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -32,7 +33,6 @@ public class CertificateService {
         TrustStrategy acceptingTrustStrategy = (cert, authType) -> {
             boolean found = false;
             for (X509Certificate c : cert) {
-                Logger.info(c.getIssuerX500Principal().getName() + ", " + c.getNotAfter().toString());
                 // most important test:
                 // Should never fail for letsencrypt certificates because certbot is in cron.d
                 // and runs ~every month.
@@ -43,7 +43,8 @@ public class CertificateService {
 
                 if (letsEncrypt && c.getIssuerX500Principal().getName().toLowerCase().contains("let's encrypt")) {
                     found = true;
-                    certNotAfterDate = c.getNotAfter().toString();
+                    certNotAfterDate = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(c.getNotAfter());
+                    Logger.info(c.getIssuerX500Principal().getName() + ", " + certNotAfterDate);
                 }
             }
             if (!found) {

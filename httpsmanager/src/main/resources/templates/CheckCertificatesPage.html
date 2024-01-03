@@ -6,7 +6,7 @@
 
         <ul>
             {{each i in domains}}
-                <li>{{i.name}}: <span style="color: {{if i.ok}}#090{{else}}#900{{/if}};">{{i.state}}</span></li>
+                <li>{{i.name}}: <span style="{{if i.ok}}color: #090;{{else}}color: #900; font-weight: bold;{{/if}}">{{i.state}}</span></li>
             {{/each}}
         </ul>
     </div>

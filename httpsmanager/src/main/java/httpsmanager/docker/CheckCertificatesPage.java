@@ -18,7 +18,7 @@ public class CheckCertificatesPage extends Page {
             boolean ok = false;
             try {
                 state = cer.checkHttpsUrl("https://" + d.getPublicDomain(), true, true);
-                ok = true;
+                ok = state != null && state.startsWith("ok");
             } catch (Exception e) {
                 state = e.getMessage();
             }
