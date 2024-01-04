@@ -63,8 +63,8 @@ public class CheckCertificatesTimer extends BaseTimer {
         if (to == null || to.isBlank()) return;
         Mail mail = new Mail();
         mail.setToEmailaddress(to);
-        mail.setSendername("https-manager");
-        mail.setSubject("Checking server certificates");
+        mail.setSendername("https-manager"); // TODO parametrisieren
+        mail.setSubject("Checking server certificates"); // TODO parametrisieren
         mail.setBody(text + "\n<< " + RenewalTimer. now());
         new MailSender().send(mail, config);
     }

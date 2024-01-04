@@ -43,8 +43,8 @@ public class RenewalTimer extends BaseTimer {
         if (to == null || to.isBlank()) return;
         Mail mail = new Mail();
         mail.setToEmailaddress(to);
-        mail.setSendername("https-manager");
-        mail.setSubject("Renewal of server certificates");
+        mail.setSendername("https-manager"); // TODO parametrisieren
+        mail.setSubject("Renewal of server certificates"); // TODO parametrisieren
         mail.setBody(text + "\n<< " + now());
         new MailSender().send(mail, config);
     }
