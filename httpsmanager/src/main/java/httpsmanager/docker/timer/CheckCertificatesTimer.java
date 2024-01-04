@@ -1,4 +1,4 @@
-package httpsmanager.docker;
+package httpsmanager.docker.timer;
 
 import org.pmw.tinylog.Logger;
 import org.quartz.JobExecutionContext;
@@ -8,6 +8,7 @@ import github.soltaufintel.amalia.mail.Mail;
 import github.soltaufintel.amalia.mail.MailSender;
 import github.soltaufintel.amalia.timer.BaseTimer;
 import github.soltaufintel.amalia.web.config.AppConfig;
+import httpsmanager.docker.CertificateService;
 import httpsmanager.domain.DomainAccess;
 
 public class CheckCertificatesTimer extends BaseTimer {
