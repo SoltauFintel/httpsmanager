@@ -15,7 +15,7 @@ public class CheckCertificatesTimer extends BaseTimer {
     
     @Override
     protected void config() throws SchedulerException {
-        start("0 50 8 ? * 4"); // every Thursday 08:50
+        start("0 50 8 ? * TUE"); // every Tuesday 8:50
     }
 
     @Override
@@ -54,6 +54,7 @@ public class CheckCertificatesTimer extends BaseTimer {
         }
     }
     
+    // TODO duplicate similar method
     private void sendMail(String text) {
         AppConfig config = new AppConfig();
         String to = config.get("mail.send-to");
