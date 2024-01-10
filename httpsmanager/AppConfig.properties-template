@@ -24,6 +24,9 @@ d.default.conf=
 # work dir for certbot files on host, read-write, modified by certbot, not modified by httpsmanager
 d.certbot=
 
+# email address for letsencrypt notifications
+d.mail=
+
 d.web-container=web
 d.web-image=nginx
 d.certbot-container=certbot
