@@ -79,10 +79,12 @@ public abstract class AbstractDocker {
         String image = config.get("d.web-image", "nginx");
         String name = config.get("d.web-container", "web");
         
+        ExposedPort eighty = ExposedPort.tcp(80);
+        ExposedPort p443 = ExposedPort.tcp(443);
         HostConfig hc = new HostConfig()
                 .withPortBindings(
-                        new PortBinding(Binding.bindPort(80), ExposedPort.tcp(80)),
-                        new PortBinding(Binding.bindPort(443), ExposedPort.tcp(443)))
+                        new PortBinding(Binding.bindPort(80), eighty),
+                        new PortBinding(Binding.bindPort(443), p443))
                 .withRestartPolicy(RestartPolicy.alwaysRestart())
                 .withLogConfig(new LogConfig(LogConfig.LoggingType.DEFAULT, getLogConfig()));
         
@@ -92,6 +94,7 @@ public abstract class AbstractDocker {
         hc.withBinds(addCertbotBinds(binds));
 
         docker.createContainerCmd(image)
+            .withExposedPorts(eighty, p443)
             .withName(name)
             .withHostConfig(hc)
             .exec();
