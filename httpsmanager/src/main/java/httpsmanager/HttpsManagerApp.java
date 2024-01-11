@@ -11,6 +11,7 @@ import httpsmanager.docker.CheckCertificatesPage;
 import httpsmanager.docker.ContainerListPage;
 import httpsmanager.docker.RenewalPage;
 import httpsmanager.docker.StartContainersAction;
+import httpsmanager.docker.StateAction;
 import httpsmanager.docker.StopContainersAction;
 import httpsmanager.docker.UnixDocker;
 import httpsmanager.docker.WindowsDocker;
@@ -25,6 +26,7 @@ import httpsmanager.start.IndexPage;
 public class HttpsManagerApp extends RouteDefinitions {
     public static final String VERSION = "0.1.0";
     public static AbstractDocker docker;
+    public static boolean stateOk = false;
     
     public static void main(String[] args) {
         new WebAppBuilder(VERSION)
@@ -37,6 +39,7 @@ public class HttpsManagerApp extends RouteDefinitions {
             .withRoutes(new MyPingRouteDefinition())
             .build()
             .boot();
+        stateOk = true;
     }
 
     @Override
@@ -56,6 +59,8 @@ public class HttpsManagerApp extends RouteDefinitions {
         get("/certificates", CertificatesPage.class);
         get("/check-certificates", CheckCertificatesPage.class);
         get("/renewal", RenewalPage.class);
+        get("/rest/state", StateAction.class);
+        addNotProtected("/rest/state");
     }
 
     public static class MyPingRouteDefinition extends RouteDefinitions {

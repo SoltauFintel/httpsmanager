@@ -8,6 +8,7 @@ import github.soltaufintel.amalia.mail.Mail;
 import github.soltaufintel.amalia.mail.MailSender;
 import github.soltaufintel.amalia.timer.BaseTimer;
 import github.soltaufintel.amalia.web.config.AppConfig;
+import httpsmanager.HttpsManagerApp;
 import httpsmanager.docker.CertificateService;
 import httpsmanager.domain.DomainAccess;
 
@@ -49,7 +50,9 @@ public class CheckCertificatesTimer extends BaseTimer {
         });
         if (msg.isEmpty()) {
             Logger.info("Server certificates are ok.");
+            HttpsManagerApp.stateOk = true;
         } else {
+            HttpsManagerApp.stateOk = false;
             String text = "There are certificate errors:\n" + msg;
             Logger.info(text);
             sendMail(text);
