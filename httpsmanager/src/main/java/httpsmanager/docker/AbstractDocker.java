@@ -49,7 +49,7 @@ public abstract class AbstractDocker {
                 if (ret.startsWith("/")) {
                     ret = ret.substring(1);
                 }
-                return ret;
+                return ret + ", " + c.getState();
             }
             return "unknown";
         }).sorted().toList();
