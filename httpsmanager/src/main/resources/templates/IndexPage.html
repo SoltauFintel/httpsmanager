@@ -1,23 +1,31 @@
 {{master: master}}
 
+<style>
+  .w4 { width: 400px; }
+</style>
+
 <div class="row"> 
     <div class="col-lg-12">
         <h1 class="page-header">https manager</h1>
 
-        <p>Sie sind als {{login}} angemeldet.</p>
         <p>
-            <a href="/start/0" class="btn btn-success br">Starte Phase 1</a>
-            <a href="/start/1" class="btn btn-success br">Starte Phase 2</a>
-            <a href="/start/2" class="btn btn-success br">Starte Phase 3</a>
-            <a href="/stop" class="btn btn-danger br">Stopp</a>
+            <a href="/start/1" class="btn btn-success br w4">Starte Phase 1: Beantragung der Zertifikate</a>
         </p>
         <p>
-            <a href="/certificates" class="btn btn-default br">certificates</a>
-            <a href="/check-certificates" class="btn btn-default br">SSL Zertifikate prüfen</a>
+            <a href="/start/2" class="btn btn-success br w4">Starte Phase 2: Domains auf https umstellen</a>
         </p>
         <p>
-            <a href="/renewal" class="btn btn-default br">renew</a>
-            <a href="/renewal?dry-run=1" class="btn btn-default br">renew dry run</a>
+            <a href="/start/0" class="btn btn-default br w4">Domains zurück auf http umstellen</a>
+            <a href="/stop" class="btn btn-default br w4">nginx und certbot Container löschen</a>
         </p>
+        <p style="margin-top: 3em;">
+            <a href="/certificates" class="btn btn-default br w4">certificates</a>
+            <a href="/check-certificates" class="btn btn-default br w4">SSL Zertifikate prüfen</a>
+        </p>
+        <p>
+            <a href="/renewal" class="btn btn-default br w4">renew</a>
+            <a href="/renewal?dry-run=1" class="btn btn-default br w4">renew dry run</a>
+        </p>
+        <p style="margin-top: 3em;">Sie sind als {{login}} angemeldet.</p>
     </div>
 </div>
