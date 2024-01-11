@@ -3,6 +3,7 @@ development=true
 app.name=httpsmanager
 
 user.login=
+# see HashPassword.java
 user.salt=
 user.password=
 user.mail=
@@ -24,7 +25,7 @@ d.default.conf=
 # work dir for certbot files on host, read-write, modified by certbot, not modified by httpsmanager
 d.certbot=
 
-# email address for letsencrypt notifications
+# email address for letsencrypt notifications (fallback to user.mail)
 d.mail=
 
 d.web-container=web
@@ -36,4 +37,5 @@ mail.smtp-server=
 mail.username=
 mail.password=
 mail.from.mail-address=
+# if mail.send-to is empty no mail will be sent
 mail.send-to=

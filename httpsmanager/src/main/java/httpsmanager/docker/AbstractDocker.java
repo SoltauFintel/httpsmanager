@@ -133,7 +133,7 @@ public abstract class AbstractDocker {
         
         pull(image);
         
-        String mail = config.get("d.mail");
+        String mail = config.get("d.mail", config.get("user.mail"));
         String domains = new DomainAccess().list().stream().map(i -> " -d " + i.getPublicDomain()).collect(Collectors.joining());
         String cmd = "certonly --email " + mail + " --webroot -w /var/www/certbot --force-renewal --agree-tos --non-interactive" + domains;
         Logger.info(cmd);
