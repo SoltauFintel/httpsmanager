@@ -17,8 +17,12 @@
                 <tr>
                     <td><a href="/domain/{{e.id}}/edit"{{if e.root}} style="font-weight: bold;"{{/if}}>{{e.publicDomain}}</a></td>
                     <td>{{e.internalDomain}}</td>
-                    <td><a href="{{e.deletelink}}" onclick="return confirm('Domain-Eintrag {{e.publicDomain}} löschen?')" class="btn btn-xs btn-danger"
-                        title="Löschen"><i class="fa fa-trash"></i></a></td>
+                    <td style="text-align: right;">
+                        <a class="btn btn-xs btn-default" title="Domain kopieren" {{if e.root}}disabled{{else}}href="{{e.copylink}}"{{/if}}><i
+                            class="fa fa-copy"></i></a>
+                        <a href="{{e.deletelink}}" onclick="return confirm('Domain-Eintrag {{e.publicDomain}} löschen?')" class="btn btn-xs btn-danger"
+                        title="Löschen"><i class="fa fa-trash"></i></a>
+                    </td>
                 </tr>
             {{/each}}
         </table>
