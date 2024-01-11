@@ -1,4 +1,4 @@
-package httpsmanager.docker;
+package httpsmanager.state;
 
 import github.soltaufintel.amalia.web.action.Action;
 import httpsmanager.HttpsManagerApp;

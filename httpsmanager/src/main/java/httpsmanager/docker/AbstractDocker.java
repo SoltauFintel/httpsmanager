@@ -13,6 +13,7 @@ import org.pmw.tinylog.Logger;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.command.LogContainerCmd;
+import com.github.dockerjava.api.command.PullImageResultCallback;
 import com.github.dockerjava.api.model.AccessMode;
 import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.Container;
@@ -31,6 +32,7 @@ import httpsmanager.domain.Domain;
 import httpsmanager.domain.DomainAccess;
 
 public abstract class AbstractDocker {
+    // TODO Docker- und nginx/certbot-Logik voneinander trennen
     private final AppConfig config = new AppConfig();
     private final DockerClient docker;
     
@@ -74,10 +76,20 @@ public abstract class AbstractDocker {
             Logger.debug("Error removing certbot container: " + e.getMessage());
         }
     }
+    
+    private void pull(String image) {
+        try {
+            docker.pullImageCmd(image).exec(new PullImageResultCallback()).awaitCompletion();
+        } catch (Exception e) {
+            Logger.error(e);
+        }
+    }
 
     public void startWebContainer() {
         String image = config.get("d.web-image", "nginx");
         String name = config.get("d.web-container", "web");
+        
+        pull(image);
         
         ExposedPort eighty = ExposedPort.tcp(80);
         ExposedPort p443 = ExposedPort.tcp(443);
@@ -118,6 +130,8 @@ public abstract class AbstractDocker {
     public void startCertbotContainer() {
         String image = certbotImage();
         String name = config.get("d.certbot-container", "certbot");
+        
+        pull(image);
         
         String mail = config.get("d.mail");
         String domains = new DomainAccess().list().stream().map(i -> " -d " + i.getPublicDomain()).collect(Collectors.joining());
