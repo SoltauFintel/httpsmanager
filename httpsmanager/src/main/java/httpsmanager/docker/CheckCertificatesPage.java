@@ -1,5 +1,7 @@
 package httpsmanager.docker;
 
+import org.pmw.tinylog.Logger;
+
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
@@ -10,6 +12,7 @@ public class CheckCertificatesPage extends Page {
 
     @Override
     protected void execute() {
+        Logger.info("CheckCertificatesPage");
         DataList list = list("domains");
         put("title", "SSL Zertifikate aller Domains prüfen");
         CertificateService cer = new CertificateService();

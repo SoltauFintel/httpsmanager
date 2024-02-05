@@ -1,7 +1,9 @@
 package httpsmanager.docker.timer;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 import org.pmw.tinylog.Logger;
 import org.quartz.JobExecutionContext;
@@ -14,14 +16,20 @@ import github.soltaufintel.amalia.web.config.AppConfig;
 import httpsmanager.HttpsManagerApp;
 
 public class RenewalTimer extends BaseTimer {
-
+    public static int checkday = -1;
+    
     @Override
     protected void config() throws SchedulerException {
-        start(new AppConfig().get("RenewalTimer.cron", "0 0 9 * * ?"));
+        start(new AppConfig().get("RenewalTimer.cron", "0 0 9 * * ?")); // every day 09:00
     }
 
     @Override
     protected void timerEvent(JobExecutionContext context) throws Exception {
+        int day = LocalDate.now().getDayOfMonth();
+        if (day != 4 && day != 18 && day != checkday) {
+            return;
+        }
+        
         String text = "[Renewal timer event] ";
         try {
             Logger.info(text + now());
@@ -46,13 +54,23 @@ public class RenewalTimer extends BaseTimer {
         if (to == null || to.isBlank()) return;
         Mail mail = new Mail();
         mail.setToEmailaddress(to);
-        mail.setSendername("https-manager"); // TODO parametrisieren
-        mail.setSubject("Renewal of server certificates"); // TODO parametrisieren
+        mail.setSendername(config.get("mail.sendername", "https-manager"));
+        mail.setSubject(config.get("mail.subject", "Renewal of server certificates"));
         mail.setBody(text + "\n<< " + now());
         new MailSender().send(mail, config);
     }
 
     public static String now() {
         return DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm").format(LocalDateTime.now());
+    }
+
+    public static void registerDay(java.util.Date notAfter) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(notAfter);
+        checkday = c.get(Calendar.DAY_OF_MONTH) + 1;
+        if (checkday > 28) {
+            checkday = 1;
+        }
+        Logger.info("Set checkday to " + checkday);
     }
 }

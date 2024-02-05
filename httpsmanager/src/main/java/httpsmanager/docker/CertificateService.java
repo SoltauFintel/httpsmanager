@@ -25,6 +25,8 @@ import org.apache.http.ssl.SSLContexts;
 import org.apache.http.ssl.TrustStrategy;
 import org.pmw.tinylog.Logger;
 
+import httpsmanager.docker.timer.RenewalTimer;
+
 public class CertificateService {
     private String certNotAfterDate;
 
@@ -44,6 +46,8 @@ public class CertificateService {
                 if (letsEncrypt && c.getIssuerX500Principal().getName().toLowerCase().contains("let's encrypt")) {
                     found = true;
                     certNotAfterDate = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(c.getNotAfter());
+                    RenewalTimer.registerDay(c.getNotAfter());
+                    
                     Logger.info(c.getIssuerX500Principal().getName() + ", " + certNotAfterDate);
                 }
             }
