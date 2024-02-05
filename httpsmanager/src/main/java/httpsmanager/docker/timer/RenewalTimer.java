@@ -67,10 +67,13 @@ public class RenewalTimer extends BaseTimer {
     public static void registerDay(java.util.Date notAfter) {
         Calendar c = Calendar.getInstance();
         c.setTime(notAfter);
+        int old = checkday;
         checkday = c.get(Calendar.DAY_OF_MONTH) + 1;
         if (checkday > 28) {
             checkday = 1;
         }
-        Logger.info("Set checkday to " + checkday);
+        if (old != checkday) {
+            Logger.info("Set checkday to " + checkday);
+        }
     }
 }
