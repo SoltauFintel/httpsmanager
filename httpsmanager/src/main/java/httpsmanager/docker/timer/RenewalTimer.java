@@ -29,10 +29,9 @@ public class RenewalTimer extends BaseTimer {
             String log = HttpsManagerApp.docker.runCertbot(cmd);
             text += "`certbot " + cmd + "` response: \n" + log;
             Logger.info(text);
-            if (text.contains("Cert not yet due for renewal")) {
+            if (text.contains("not yet due for renewal")) {
                 HttpsManagerApp.stateOk = true;
             }
-            // TODO Ich weiß noch nicht, wie ich einen richtigen Fehler erkennen kann, wenn keine Exception fliegt.
         } catch (Exception e) {
             HttpsManagerApp.stateOk = false;
             Logger.error(e);

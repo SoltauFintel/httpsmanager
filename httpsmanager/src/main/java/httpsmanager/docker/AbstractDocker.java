@@ -291,43 +291,38 @@ public abstract class AbstractDocker {
     }
     
     public String runCertbot(String cmd) {
-        try {
-            String image = certbotImage();
-            String id = docker.createContainerCmd(image)
-                .withCmd(cmd.split(" "))
-                .withHostConfig(new HostConfig().withBinds(addCertbotBinds(new ArrayList<>())))
-                .exec().getId();
-            Logger.info("created " + image + " container " + id);
-            
-            docker.startContainerCmd(id).exec();
+        String image = certbotImage();
+        String id = docker.createContainerCmd(image)
+            .withCmd(cmd.split(" "))
+            .withHostConfig(new HostConfig().withBinds(addCertbotBinds(new ArrayList<>())))
+            .exec().getId();
+        Logger.info("created " + image + " container " + id);
+        
+        docker.startContainerCmd(id).exec();
 
-            String logs = "";
-            for (int i = 1; i <= 6; i++) {
-                try {
-                    Thread.sleep(2 * 1000);
-                } catch (Exception e) {
-                }
-                logs = logs(id);
-                if (logs != null && !logs.isEmpty()) {
-                    break;
-                }
+        String logs = "";
+        for (int i = 1; i <= 6; i++) {
+            try {
+                Thread.sleep(2 * 1000);
+            } catch (Exception e) {
             }
-            
-            new Thread(() -> {
-                try {
-                    Thread.sleep(10 * 60 * 1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                docker.removeContainerCmd(id).withForce(Boolean.TRUE).exec();
-                Logger.info("cleanup: " + image + " container gelöscht: " + id);
-            }).start();
-            
-            return logs;
-        } catch (Exception e) {
-            Logger.error(e);
-            return e.getMessage();
+            logs = logs(id);
+            if (logs != null && !logs.isEmpty()) {
+                break;
+            }
         }
+        
+        new Thread(() -> {
+            try {
+                Thread.sleep(10 * 60 * 1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            docker.removeContainerCmd(id).withForce(Boolean.TRUE).exec();
+            Logger.info("cleanup: " + image + " container gelöscht: " + id);
+        }).start();
+        
+        return logs;
     }
     
     public String logs(String container) {
