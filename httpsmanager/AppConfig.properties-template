@@ -39,3 +39,6 @@ mail.password=
 mail.from.mail-address=
 # if mail.send-to is empty no mail will be sent
 mail.send-to=
+
+CheckCertificatesTimer.cron=0 50 8 ? * TUE
+RenewalTimer.cron=0 0 9 * * ?

@@ -17,8 +17,7 @@ public class RenewalTimer extends BaseTimer {
 
     @Override
     protected void config() throws SchedulerException {
-        start("0 0  9  4 * ?");
-        // TODO cron expression nach AppConfig !
+        start(new AppConfig().get("RenewalTimer.cron", "0 0 9 * * ?"));
     }
 
     @Override

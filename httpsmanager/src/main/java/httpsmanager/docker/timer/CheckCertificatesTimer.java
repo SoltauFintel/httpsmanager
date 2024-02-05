@@ -17,8 +17,7 @@ public class CheckCertificatesTimer extends BaseTimer {
     
     @Override
     protected void config() throws SchedulerException {
-        start("0 50 8 ? * TUE"); // every Tuesday 8:50
-        // TODO cron expression nach AppConfig !
+        start(new AppConfig().get("CheckCertificatesTimer.cron", "0 50 8 ? * TUE")); // every Tuesday 8:50
     }
 
     @Override
