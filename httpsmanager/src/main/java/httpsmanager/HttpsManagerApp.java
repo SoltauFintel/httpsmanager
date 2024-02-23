@@ -65,6 +65,8 @@ public class HttpsManagerApp extends RouteDefinitions {
         get("/rest/state", StateAction.class);
         addNotProtected("/rest/state");
         get("/state", SetStateAction.class);
+        
+        // TODO /rest/_info
     }
 
     public static class MyPingRouteDefinition extends RouteDefinitions {
