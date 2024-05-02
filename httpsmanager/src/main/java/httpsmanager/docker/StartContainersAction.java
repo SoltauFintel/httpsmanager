@@ -11,7 +11,7 @@ public class StartContainersAction extends Action {
     protected void execute() {
         int phase = Integer.parseInt(ctx.pathParam("phase"));
 
-        Logger.info("starting phase " + phase + "...");
+        Logger.info("StartContainersAction: starting phase " + phase + "...");
         HttpsManagerApp.docker.deleteWebContainer();
         HttpsManagerApp.docker.deleteCertbotContainer();
         
@@ -28,5 +28,6 @@ public class StartContainersAction extends Action {
         }
 
         ctx.redirect("/");
+        Logger.debug("StartContainersAction(" + phase + ") finished <----");
     }
 }

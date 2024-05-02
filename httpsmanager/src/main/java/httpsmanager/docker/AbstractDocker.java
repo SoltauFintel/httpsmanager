@@ -62,7 +62,9 @@ public abstract class AbstractDocker {
     public void deleteWebContainer() {
         try {
             String name = config.get("d.web-container", "web");
+            Logger.debug("Removing web container | config.get(\"d.web-container\", \"web\"): " + name);
             docker.removeContainerCmd(name).withForce(Boolean.TRUE).exec();
+            Logger.debug("Removing web container | force container removal: " + name + " => ok");
         } catch (Exception e) {
             Logger.debug("Error removing web container: " + e.getMessage());
         }
@@ -71,7 +73,9 @@ public abstract class AbstractDocker {
     public void deleteCertbotContainer() {
         try {
             String name = config.get("d.certbot-container", "certbot");
+            Logger.debug("Removing certbot container | config.get(\"d.certbot-container\", \"web\"): " + name);
             docker.removeContainerCmd(name).withForce(Boolean.TRUE).exec();
+            Logger.debug("Removing certbot container | force container removal: " + name + " => ok");
         } catch (Exception e) {
             Logger.debug("Error removing certbot container: " + e.getMessage());
         }
@@ -79,8 +83,11 @@ public abstract class AbstractDocker {
     
     private void pull(String image) {
         try {
+        	Logger.debug("pulling image: " + image);
             docker.pullImageCmd(image).exec(new PullImageResultCallback()).awaitCompletion();
+        	Logger.debug("pulling image: " + image + " => ok");
         } catch (Exception e) {
+        	Logger.debug("Error pulling image: " + image);
             Logger.error(e);
         }
     }
@@ -99,10 +106,11 @@ public abstract class AbstractDocker {
                         new PortBinding(Binding.bindPort(443), p443))
                 .withRestartPolicy(RestartPolicy.alwaysRestart())
                 .withLogConfig(new LogConfig(LogConfig.LoggingType.DEFAULT, getLogConfig()));
+        Logger.debug("- preparing port 80 and 443, restart always, log-config");
         
         List<Bind> binds = new ArrayList<>();
-        binds.add(new Bind(config.get("d.web"), new Volume("/usr/share/nginx/html"), AccessMode.ro));
-        binds.add(new Bind(config.get("d.default.conf"), new Volume("/etc/nginx/conf.d/default.conf"), AccessMode.ro));
+        addBind("d.web", "/usr/share/nginx/html", binds);
+        addBind("d.default.conf", "/etc/nginx/conf.d/default.conf", binds);
         hc.withBinds(addCertbotBinds(binds));
 
         docker.createContainerCmd(image)
@@ -110,8 +118,16 @@ public abstract class AbstractDocker {
             .withName(name)
             .withHostConfig(hc)
             .exec();
+        Logger.debug("- container created [from config d.web-container]: " + name + " | image [from config d.web-image]: " + image);
         
         docker.startContainerCmd(name).exec();
+        Logger.debug("- container started: " + name);
+    }
+    
+    private void addBind(String configName, String volumePath, List<Bind> binds) {
+    	String a = config.get(configName);
+        binds.add(new Bind(a, new Volume(volumePath), AccessMode.ro));
+		Logger.debug("- volume: [from config " + configName + "] " + a + " -> " + volumePath + " (read-only)");
     }
 
     private Map<String, String> getLogConfig() {
@@ -143,8 +159,10 @@ public abstract class AbstractDocker {
             .withName(name)
             .withHostConfig(new HostConfig().withBinds(addCertbotBinds(new ArrayList<>())))
             .exec();
+        Logger.debug("- container created [from config d.certbot-container]: " + name + " | image [from config d.certbot-image]: " + image);
     
         docker.startContainerCmd(name).exec();
+        Logger.debug("- container started: " + name);
     }
 
     public String certbotImage() {
