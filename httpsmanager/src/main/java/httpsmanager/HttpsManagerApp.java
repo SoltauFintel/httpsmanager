@@ -1,6 +1,7 @@
 package httpsmanager;
 
 import org.pmw.tinylog.Level;
+import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.Action;
 import github.soltaufintel.amalia.web.builder.LoggingInitializer;
@@ -23,12 +24,13 @@ import httpsmanager.domain.AddDomainPage;
 import httpsmanager.domain.DeleteDomainAction;
 import httpsmanager.domain.DomainListPage;
 import httpsmanager.domain.EditDomainPage;
+import httpsmanager.domain.InitDomains;
 import httpsmanager.start.IndexPage;
 import httpsmanager.state.SetStateAction;
 import httpsmanager.state.StateAction;
 
 public class HttpsManagerApp extends RouteDefinitions {
-    public static final String VERSION = "0.3.1";
+    public static final String VERSION = "1.0.0";
     public static AbstractDocker docker;
     public static boolean stateOk = false;
     
@@ -104,5 +106,8 @@ public class HttpsManagerApp extends RouteDefinitions {
         } else {
             docker = new UnixDocker();
         }
+        Logger.debug(docker.getClass().getSimpleName());
+        
+        InitDomains.createDomainsFromConfig(config);
     }
 }

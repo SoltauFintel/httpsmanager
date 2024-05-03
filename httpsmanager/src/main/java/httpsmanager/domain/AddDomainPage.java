@@ -22,7 +22,7 @@ public class AddDomainPage extends Page {
             if (id != null && !id.isEmpty()) {
                 d = domainAccess.get(id);
             }
-            put("title", d == null ? "Domain hinzufügen" : "Domain kopieren");
+            put("title", d == null ? "Domain hinzuf&uuml;gen" : "Domain kopieren");
             put("publicDomain", d == null ? "" : esc(d.getPublicDomain()));
             put("internalDomain", d == null ? "" : esc(d.getInternalDomain()));
             put("certificateName", esc(d == null ? new AppConfig().get("default-certificate-name") : d.getCertificateName()));
