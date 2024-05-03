@@ -111,6 +111,12 @@ public abstract class AbstractDocker {
                 .withLogConfig(new LogConfig(LogConfig.LoggingType.DEFAULT, getLogConfig()));
         Logger.debug("- preparing port 80 and 443, restart always, log-config");
         
+        String network = config.get("d.web-network");
+        if (network != null && !network.isBlank()) {
+        	hc = hc.withNetworkMode(network);
+        	Logger.debug("- with network: " + network);
+        }
+        
         List<Bind> binds = new ArrayList<>();
         addBind("d.web", "/usr/share/nginx/html", binds);
         addBind("d.default.conf", "/etc/nginx/conf.d/default.conf", binds);
