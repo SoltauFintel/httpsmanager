@@ -9,7 +9,7 @@
         
         <table class="table table-striped table-hover ntabelle">
             <tr>
-                <th>Öffentliche Domain</th>
+                <th>&Ouml;ffentliche Domain</th>
                 <th>internes Ziel</th>
                 <th></th>
             </tr>
@@ -20,8 +20,8 @@
                     <td style="text-align: right;">
                         <a class="btn btn-xs btn-default" title="Domain kopieren" {{if e.root}}disabled{{else}}href="{{e.copylink}}"{{/if}}><i
                             class="fa fa-copy"></i></a>
-                        <a href="{{e.deletelink}}" onclick="return confirm('Domain-Eintrag {{e.publicDomain}} löschen?')" class="btn btn-xs btn-danger"
-                        title="Löschen"><i class="fa fa-trash"></i></a>
+                        <a href="{{e.deletelink}}" onclick="return confirm('Domain-Eintrag {{e.publicDomain}} l&ouml;schen?')" class="btn btn-xs btn-danger"
+                        title="L&ouml;schen"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
             {{/each}}
