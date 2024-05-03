@@ -15,7 +15,7 @@ public class StopContainersAction extends Action {
             HttpsManagerApp.docker.deleteCertbotContainer();
             Logger.info("deleting certbot container finished");
         }).start();
-        Logger.info("web+certbot Container löschen Anfrage angenommen");
+        Logger.info("web+certbot Container loeschen Anfrage angenommen");
         
         ctx.redirect("/");
     }

@@ -337,7 +337,7 @@ public abstract class AbstractDocker {
                 throw new RuntimeException(e);
             }
             docker.removeContainerCmd(id).withForce(Boolean.TRUE).exec();
-            Logger.info("cleanup: " + image + " container gelöscht: " + id);
+            Logger.info("cleanup: " + image + " container geloescht: " + id);
         }).start();
         
         return logs;
