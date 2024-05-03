@@ -2,12 +2,12 @@ package httpsmanager;
 
 import org.pmw.tinylog.Level;
 
+import github.soltaufintel.amalia.auth.simple.SimpleAuth;
 import github.soltaufintel.amalia.web.action.Action;
 import github.soltaufintel.amalia.web.builder.LoggingInitializer;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
 import github.soltaufintel.amalia.web.config.AppConfig;
 import github.soltaufintel.amalia.web.route.RouteDefinitions;
-import httpsmanager.auth.SimpleAuth;
 import httpsmanager.docker.AbstractDocker;
 import httpsmanager.docker.CertificatesPage;
 import httpsmanager.docker.CheckCertificatesPage;
