@@ -42,3 +42,10 @@ mail.send-to=
 
 CheckCertificatesTimer.cron=0 50 8 ? * TUE
 RenewalTimer.cron=0 0 9 * * ?
+
+# init domains at startup
+domains=1
+domain.1.public=
+domain.1.internal=
+domain.1.certificate-name=
+domain.1.root=true

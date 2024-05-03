@@ -20,6 +20,10 @@ public class InitDomains {
 		Logger.info("domains in config: " + n);
 		for (int i = 1; i <= n; i++) {
 			String pd = config.get("domain." + i + ".public");
+			if (pd == null || pd.isBlank()) {
+				Logger.debug("domain." + i + ".public is empty -> skip");
+				continue;
+			}
 
 			boolean found = false;
 			for (Domain d : domains) {
