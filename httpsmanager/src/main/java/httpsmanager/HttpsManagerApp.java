@@ -1,6 +1,9 @@
 package httpsmanager;
 
+import org.pmw.tinylog.Level;
+
 import github.soltaufintel.amalia.web.action.Action;
+import github.soltaufintel.amalia.web.builder.LoggingInitializer;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
 import github.soltaufintel.amalia.web.config.AppConfig;
 import github.soltaufintel.amalia.web.route.RouteDefinitions;
@@ -31,6 +34,7 @@ public class HttpsManagerApp extends RouteDefinitions {
     
     public static void main(String[] args) {
         new WebAppBuilder(VERSION)
+        	.withLogging(new LoggingInitializer(Level.INFO, "{date} {level}  {message}"))
             .withAuth(new SimpleAuth())
             .withTemplatesFolders(HttpsManagerApp.class, "/templates")
             .withInitializer(config -> initDocker(config))
