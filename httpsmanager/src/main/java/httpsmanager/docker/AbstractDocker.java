@@ -83,6 +83,9 @@ public abstract class AbstractDocker {
     
     private void pull(String image) {
         try {
+        	if (!image.contains(":")) {
+        		image += ":latest";
+        	}
         	Logger.debug("pulling image: " + image);
             docker.pullImageCmd(image).exec(new PullImageResultCallback()).awaitCompletion();
         	Logger.debug("pulling image: " + image + " => ok");
