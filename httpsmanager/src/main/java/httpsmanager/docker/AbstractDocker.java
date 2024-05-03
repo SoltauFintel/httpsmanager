@@ -143,6 +143,7 @@ public abstract class AbstractDocker {
     private List<Bind> addCertbotBinds(List<Bind> binds) {
         binds.add(new Bind(config.get("d.certbot") + "/conf", new Volume("/etc/letsencrypt"), AccessMode.rw));
         binds.add(new Bind(config.get("d.certbot") + "/www", new Volume("/var/www/certbot"), AccessMode.rw));
+        binds.add(new Bind("certbot_lib_letsencrypt", new Volume("/var/lib/letsencrypt"), AccessMode.rw));
         return binds;
     }
     
