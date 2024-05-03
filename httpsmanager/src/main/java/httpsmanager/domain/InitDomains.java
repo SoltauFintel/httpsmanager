@@ -17,7 +17,7 @@ public class InitDomains {
 		DomainAccess access = new DomainAccess();
 		List<Domain> domains = access.list();
 		int n = config.getInt("domains", 0);
-		Logger.debug("domains in config: " + n);
+		Logger.info("domains in config: " + n);
 		for (int i = 1; i <= n; i++) {
 			String pd = config.get("domain." + i + ".public");
 
@@ -29,7 +29,7 @@ public class InitDomains {
 				}
 			}
 			if (found) {
-				Logger.debug("domain already exists: " + pd);
+				Logger.info("domain already exists: " + pd);
 			} else {
 				String id = config.get("domain." + i + ".internal");
 				String cn = config.get("domain." + i + ".certificate-name");
@@ -47,7 +47,7 @@ public class InitDomains {
 			}
 		}
 		if (added) {
-			Logger.debug("InitDomains starting phase 1 and then phase 2 ...");
+			Logger.info("InitDomains starting phase 1 and then phase 2 ...");
 			StartPhase.start(1);
 			StartPhase.start(2);
 		}
