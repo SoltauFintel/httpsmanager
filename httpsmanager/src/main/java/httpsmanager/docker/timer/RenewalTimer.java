@@ -32,7 +32,6 @@ public class RenewalTimer extends BaseTimer {
         
         String text = "[Renewal timer event] ";
         try {
-            Logger.info(text + now());
             String cmd = "renew";
             String log = HttpsManagerApp.docker.runCertbot(cmd);
             text += "`certbot " + cmd + "` response: \n" + log;
