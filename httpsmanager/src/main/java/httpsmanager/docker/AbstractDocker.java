@@ -346,9 +346,20 @@ public abstract class AbstractDocker {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            Logger.info("`certbot " + cmd + "` output after 15 minutes before removal: " + logs(id));
+            String log = logs(id);
+            Logger.info("`certbot " + cmd + "` output after 15 minutes before removal: " + log);
+
             docker.removeContainerCmd(id).withForce(Boolean.TRUE).exec();
             Logger.info("cleanup: " + image + " container removed: " + id);
+            
+            if ("renew".equals(cmd) && !log.contains("not yet due for renewal")) {
+                // Restart nginx
+                String nginxContainerName = new AppConfig().get("d.web-container", "web");
+                if (nginxContainerName != null && !nginxContainerName.isBlank()) {
+                    Logger.info("docker restart " + nginxContainerName);
+                    docker.restartContainerCmd(nginxContainerName).exec();
+                }
+            }
         }).start();
         
         return logs;

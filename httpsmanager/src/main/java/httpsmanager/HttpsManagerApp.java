@@ -30,7 +30,7 @@ import httpsmanager.state.SetStateAction;
 import httpsmanager.state.StateAction;
 
 public class HttpsManagerApp extends RouteDefinitions {
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.1.0";
     public static AbstractDocker docker;
     public static boolean stateOk = false;
     
