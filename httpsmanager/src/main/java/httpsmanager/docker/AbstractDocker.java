@@ -342,12 +342,13 @@ public abstract class AbstractDocker {
         
         new Thread(() -> {
             try {
-                Thread.sleep(10 * 60 * 1000);
+                Thread.sleep(15 * 60 * 1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            Logger.info("`certbot " + cmd + "` output after 15 minutes before removal: " + logs(id));
             docker.removeContainerCmd(id).withForce(Boolean.TRUE).exec();
-            Logger.info("cleanup: " + image + " container geloescht: " + id);
+            Logger.info("cleanup: " + image + " container removed: " + id);
         }).start();
         
         return logs;
