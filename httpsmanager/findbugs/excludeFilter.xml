@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://findbugs.sourceforge.net/filter/3.0.0"
+	xsi:schemaLocation="http://findbugs.sourceforge.net/filter/3.0.0 https://findbugs.googlecode.com/git/findbugs/etc/findbugsfilter.xsd">
+
+    <!-- exclude all files from JasperReports scriptlet package -->
+    <!-- ~ sign is used to mark regex as java regex -->
+    <Match>
+        <Class name="~de\.xmap\.jasper\.scriptlet\..*"/>
+    </Match>
+
+	<!-- exclude bugs with low confidence or rank higher than 15 -->
+	<Match>
+		<And>
+			<Or>
+				<Rank value="16" />
+				<Confidence value="3" />
+			</Or>
+			<Not>
+				<Or>
+					<Bug pattern="NP_BOOLEAN_RETURN_NULL" />
+					<Bug pattern="ES_COMPARING_PARAMETER_STRING_WITH_EQ" />
+					<Bug pattern="ES_COMPARING_STRINGS_WITH_EQ" />
+					<Bug pattern="RC_REF_COMPARISON" />
+					<Bug pattern="RC_REF_COMPARISON_BAD_PRACTICE" />
+					<Bug pattern="RC_REF_COMPARISON_BAD_PRACTICE_BOOLEAN" />
+					<Bug pattern="SBSC_USE_STRINGBUFFER_CONCATENATION" />
+					<Bug pattern="SE_BAD_FIELD" />
+					<Bug pattern="SE_BAD_FIELD_STORE" />
+					<Bug pattern="SE_BAD_FIELD_INNER_CLASS" />
+					<Bug pattern="SE_NO_SUITABLE_CONSTRUCTOR" />
+					<Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED" />
+				</Or>
+			</Not>
+		</And>
+	</Match>
+
+</FindBugsFilter>

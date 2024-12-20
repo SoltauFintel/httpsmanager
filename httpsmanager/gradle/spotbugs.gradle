@@ -1,0 +1,52 @@
+apply plugin: 'com.github.spotbugs-base'
+
+        dependencies {
+            spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.13.0'
+        }
+        spotbugs {
+            if (project.name.endsWith('-client')) {
+                excludeFilter = rootProject.file('findbugs/projects/x-client/excludeFilter.xml')
+            } else {
+                excludeFilter = rootProject.file('findbugs/excludeFilter.xml')
+            }
+            extraArgs = [ '-nested:false' ]
+            jvmArgs = [ '-Xmx2048M','-XX:ReservedCodeCacheSize=264m' ] 
+            ignoreFailures = true
+        }
+
+        def k1 = null
+        def k2 = null
+        def k3 = null
+        sourceSets.findAll { s -> s.name != 'test' }.each { s ->
+            if (k1 == null) {
+                k1 = s.allSource.sourceDirectories
+                k2 = s.output
+                k3 = s.compileClasspath
+            } else {
+                k1 = files(k1, s.allSource.sourceDirectories)
+                k2 = files(k2, s.output)
+                k3 = files(k3, s.compileClasspath)
+            }
+        }
+        tasks.register('runSpotBugs', com.github.spotbugs.snom.SpotBugsTask) {
+            sourceDirs    = k1
+            classDirs     = k2
+            auxClassPaths = k3
+            visitors = 
+                // Relevant SpotBugs visitors
+                ['CallToUnsupportedMethod','CheckExpectedWarnings','CovariantArrayAssignment','InefficientIndexOf','InefficientInitializationInsideLoop','InefficientMemberAccess','InefficientToArray','PublicSemaphores','UselessSubclassMethod','OverridingMethodsMustInvokeSuperDetector','FindRoughConstants','SynchronizeAndNullCheckField','InitializeNonnullFieldsInConstructor','BooleanReturnNull','OptionalReturnNull','ConfusionBetweenInheritedAndOuterMethod','SynchronizationOnSharedBuiltinConstant','NoteUnconditionalParamDerefs','SynchronizeOnClassLiteralNotGetClass','InfiniteRecursiveLoop','InfiniteLoop','VolatileUsage','InheritanceUnsafeGetResource','DoInsideDoPrivileged','HugeSharedStringConstants','FinalizerNullsFields','MutableEnum','InconsistentAnnotations','RepeatedConditionals','RedundantConditions','FormatStringChecker','LostLoggerDueToWeakReference','EqualsOperandShouldHaveClassCompatibleWithThis','CheckImmutableAnnotation','DontCatchIllegalMonitorStateException','CloneIdiom','ComparatorIdiom','FindFieldSelfAssignment','FindSelfComparison','FindSelfComparison2','DroppedException','LoadOfKnownNullValue','DumbMethodInvocations','URLProblems','DumbMethods','NumberConstructor','FindSqlInjection','FindDoubleCheck','FindFinalizeInvocations','FindHEmismatch','OverridingEqualsNotSymmetrical','FindNakedNotify','FindReturnRef','FindRunInvocations','SwitchFallthrough','FindSpinLoop','FindNonShortCircuit','FindTwoLockWait','FindUnconditionalWait','FindUninitializedGet','DontUseEnum','FindUnsyncGet','InitializationChain','IteratorIdioms','PreferZeroLengthArrays','SynchronizingOnContentsOfFieldToProtectField','MutableLock','FindUselessObjects','MutableStaticFields','Naming','ReadReturnShouldBeChecked','SerializableIdiom','StartInConstructor','FindBadForLoop','ExplicitSerialization','UnreadFields','WaitInLoop','FindComparatorProblems','FindNullDeref','FindNullDerefsInvolvingNonShortCircuitEvaluation','FindOpenStream','FindUselessControlFlow','FindUnreleasedLock','FindRefComparison','FindMismatchedWaitOrNotify','FindEmptySynchronizedBlock','FindInconsistentSync2','FindLocalSelfAssignment2','IncompatMask','LazyInit','FindJSR166LockMonitorenter','FindUncalledPrivateMethods','UncallableMethodOfAnonymousClass','StringConcatenation','InvalidJUnitTest','BadlyOverriddenAdapter','BadResultSetAccess','SuperfluousInstanceOf','SuspiciousThreadInterrupted','FindDeadLocalStores','FindMaskedFields','WrongMapIterator','InstantiateStaticClass','RuntimeExceptionCapture','DontCatchNullPointerException','FindFloatEquality','FindUnsatisfiedObligation','UnnecessaryMath','RedundantInterfaces','MultithreadedInstanceAccess','BadUseOfReturnValue','MethodReturnCheck','IDivResultCastToDouble','FindBadCast2','FindUseOfNonSerializableValue','BadSyntaxForRegularExpression','VarArgsProblems','FindPuzzlers','IntCast2LongAsInstant','FindSleepWithLockHeld','DuplicateBranches','XMLFactoryBypass','ConfusedInheritance','QuestionableBooleanAssignment','AppendingToAnObjectOutputStream','FindUnrelatedTypesInGenericContainer','StaticCalendarDetector','CheckTypeQualifiers','CrossSiteScripting','DontIgnoreResultOfPutIfAbsent','ReadOfInstanceFieldInMethodInvokedByConstructorInSuperclass','AtomicityProblem','DefaultEncodingDetector','CheckRelaxingNullnessAnnotation','DontAssertInstanceofInTests','FindBadEndOfStreamCheck','ReflectionIncreaseAccessibility','FindOverridableMethodCall',
+                // Relevant FindSecBugs visitors
+                'ServletEndpointDetector', 'CookieReadDetector', 'CookieFlagsDetector', 'CommandInjectionDetector', 'WeakFilenameUtilsMethodDetector', 'WeakTrustManagerDetector', 'JaxWsEndpointDetector', 'JaxRsEndpointDetector', 'TapestryEndpointDetector', 'WicketEndpointDetector', 'WeakMessageDigestDetector', 'WeakTLSDetector', 'CustomMessageDigestDetector', 'FileUploadFilenameDetector', 'XxeDetector', 'TransformerFactoryDetector', 'XmlStreamReaderDetector', 'XPathInjectionDetector', 'Struts1EndpointDetector', 'Struts2EndpointDetector', 'SpringMvcEndpointDetector', 'SpringCsrfProtectionDisabledDetector', 'SpringCsrfUnrestrictedRequestMappingDetector', 'CustomInjectionDetector', 'AndroidSqlInjectionDetector', 'BadHexadecimalConversionDetector', 'HazelcastSymmetricEncryptionDetector', 'NullCipherDetector', 'UnencryptedSocketDetector', 'UnencryptedServerSocketDetector', 'DesUsageDetector', 'TDesUsageDetector', 'RsaNoPaddingDetector', 'ConstantPasswordDetector', 'GoogleApiKeyDetector', 'HardcodePasswordInMapDetector', 'IntuitiveHardcodePasswordDetector', 'HardcodedPasswordEqualsDetector', 'HashUnsafeEqualsDetector', 'KotlinHardcodedPasswordEqualsDetector', 'StrutsValidatorFormDetector', 'XSSRequestWrapperDetector', 'InsufficientKeySizeBlowfishDetector', 'InsufficientKeySizeRsaDetector', 'UnvalidatedRedirectDetector', 'XssJspDetector', 'XssServletDetector', 'JspIncludeDetector', 'JspSpringEvalDetector', 'JstlOutDetector', 'XslTransformJspDetector', 'StdXmlTransformDetector', 'XmlDecoderDetector', 'StaticIvDetector', 'CipherWithNoIntegrityDetector', 'EsapiEncryptorDetector', 'ScriptInjectionDetector', 'OgnlInjectionDetector', 'SpelViewDetector', 'GroovyShellDetector', 'HttpResponseSplittingDetector', 'CrlfLogInjectionDetector', 'ExternalConfigurationControlDetector', 'ExternalFileAccessDetector', 'BroadcastDetector', 'WorldWritableDetector', 'GeolocationDetector', 'WebViewJavascriptEnabledDetector', 'WebViewJavascriptInterfaceDetector', 'ObjectDeserializationDetector', 'UnsafeJacksonDeserializationDetector', 'DeserializationGadgetDetector', 'TrustBoundaryViolationAttributeDetector', 'TrustBoundaryViolationValueDetector', 'PlayUnvalidatedRedirectDetector', 'SslDisablerDetector', 'ScalaSensitiveDataExposureDetector', 'XssMvcApiDetector', 'XssTwirlDetector', 'VelocityDetector', 'FreemarkerDetector', 'PebbleDetector', 'LdapInjectionDetector', 'AnonymousLdapDetector', 'LdapEntryPoisoningDetector', 'PermissiveCORSDetector', 'PersistentCookieDetector', 'UrlRewritingDetector', 'InsecureSmtpSslDetector', 'AwsQueryInjectionDetector', 'BeanInjectionDetector', 'FileDisclosureDetector', 'FormatStringManipulationDetector', 'HttpParameterPollutionDetector', 'SmtpHeaderInjectionDetector', 'SpringUnvalidatedRedirectDetector', 'SpringEntityLeakDetector', 'CorsRegistryCORSDetector', 'SamlIgnoreCommentsDetector', 'PotentialValueTracker', 'JstlExpressionWhiteLister', 'ErrorMessageExposureDetector', 'KotlinHardcodePasswordInMapDetector', 'EnabledExtensionsInApacheXmlRpcDetector', 'WicketXssComponentDetector', 'OverlyPermissiveFilePermissionDetector', 'SuspiciousCommandDetector', 'JschPasswordDetector', 'ImproperHandlingUnicodeDetector', 'ModificationAfterValidationDetector', 'NormalizationAfterValidationDetector', 'DangerousPermissionCombination']
+            reports {
+                xml {
+                    required = true
+                }
+                /* if you need HTML:
+                html {
+                    required = true
+                    outputLocation = file("$buildDir/reports/spotbugs/main/spotbugs.html")
+                    stylesheet = 'fancy-hist.xsl'
+                }*/
+            }
+        }
+        

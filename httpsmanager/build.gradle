@@ -3,6 +3,7 @@ plugins {
     id 'java-library'
     id 'eclipse'
     id 'com.bmuschko.docker-java-application' version '6.7.0'
+    id 'com.github.spotbugs' version '6.0.24'
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -26,3 +27,9 @@ repositories {
 }
 
 apply from: 'gradle/docker.gradle'
+//apply from: 'gradle/spotbugs.gradle'
+
+spotbugs {
+    ignoreFailures = false
+     reportsDir = file("$buildDir/reports/spotbugs")
+}
