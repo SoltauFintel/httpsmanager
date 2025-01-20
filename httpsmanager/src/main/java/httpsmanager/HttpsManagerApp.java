@@ -4,10 +4,10 @@ import org.pmw.tinylog.Level;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.auth.simple.SimpleAuth;
-import github.soltaufintel.amalia.web.action.Action;
 import github.soltaufintel.amalia.web.builder.LoggingInitializer;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
 import github.soltaufintel.amalia.web.config.AppConfig;
+import github.soltaufintel.amalia.web.route.PingRouteDefinition;
 import github.soltaufintel.amalia.web.route.RouteDefinitions;
 import httpsmanager.docker.AbstractDocker;
 import httpsmanager.docker.CertificatesPage;
@@ -43,7 +43,7 @@ public class HttpsManagerApp extends RouteDefinitions {
             .withInitializer(config -> new CheckCertificatesTimer().start())
             .withInitializer(config -> new RenewalTimer().start())
             .withRoutes(new HttpsManagerApp())
-            .withRoutes(new MyPingRouteDefinition())
+            .withRoutes(new PingRouteDefinition())
             .build()
             .boot();
         stateOk = true;
@@ -75,31 +75,6 @@ public class HttpsManagerApp extends RouteDefinitions {
         // TODO /rest/_info
     }
 
-    public static class MyPingRouteDefinition extends RouteDefinitions {
-
-        public MyPingRouteDefinition() {
-            super(29);
-        }
-        
-        @Override
-        public void routes() {
-            get("/rest/_ping", PingAction.class);
-        }
-        
-        public static class PingAction extends Action {
-
-            @Override
-            protected void execute() {
-                System.out.println("ping neu");
-            }
-            
-            @Override
-            protected String render() {
-                return "pong"; // TODO Amalia
-            }
-        }
-    }
-    
     public static void initDocker(AppConfig config) {
         if (config.isDevelopment()) {
             docker = new WindowsDocker();
