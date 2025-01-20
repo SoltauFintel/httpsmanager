@@ -12,6 +12,7 @@ import httpsmanager.HttpsManagerApp;
 import httpsmanager.docker.CertificateService;
 import httpsmanager.domain.DomainAccess;
 
+// TODO auf AbstractTimer umstellen
 public class CheckCertificatesTimer extends BaseTimer {
     private String msg;
     

@@ -15,12 +15,13 @@ application {
 }
 
 dependencies {
-    implementation 'com.github.SoltauFintel.amalia:amalia-web:0.18.4'
-    implementation 'com.github.docker-java:docker-java:3.3.4'
+    implementation 'com.github.soltaufintel.amalia:amalia-web:0.19.0'
+    implementation 'com.github.docker-java:docker-java:3.3.6'
 }
 
 repositories {
     mavenCentral()
+    maven { url 'https://pack.mwvb.de' }
     maven { url 'https://jitpack.io' }
     maven { url 'https://www.javaxt.com/maven' }
 }

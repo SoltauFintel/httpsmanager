@@ -15,6 +15,7 @@ import github.soltaufintel.amalia.timer.BaseTimer;
 import github.soltaufintel.amalia.web.config.AppConfig;
 import httpsmanager.HttpsManagerApp;
 
+// TODO auf AbstractTimer umstellen
 public class RenewalTimer extends BaseTimer {
     public static int checkday = -1;
     
