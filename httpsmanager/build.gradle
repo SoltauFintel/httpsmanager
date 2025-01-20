@@ -15,7 +15,7 @@ application {
 }
 
 dependencies {
-    implementation 'com.github.SoltauFintel.amalia:amalia-web:0.15.1'
+    implementation 'com.github.SoltauFintel.amalia:amalia-web:0.18.4'
     implementation 'com.github.docker-java:docker-java:3.3.4'
 }
 

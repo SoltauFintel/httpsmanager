@@ -37,7 +37,7 @@ public class HttpsManagerApp extends RouteDefinitions {
     public static void main(String[] args) {
         new WebAppBuilder(VERSION)
         	.withLogging(new LoggingInitializer(Level.INFO, "{date} {level}  {message}"))
-            .withAuth(new SimpleAuth())
+            .withAuth(config -> new SimpleAuth(config))
             .withTemplatesFolders(HttpsManagerApp.class, "/templates")
             .withInitializer(config -> initDocker(config))
             .withInitializer(config -> new CheckCertificatesTimer().start())
