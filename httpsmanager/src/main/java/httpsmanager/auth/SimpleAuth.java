@@ -4,6 +4,8 @@ import github.soltaufintel.amalia.auth.Auth;
 import github.soltaufintel.amalia.auth.IUserService;
 import github.soltaufintel.amalia.auth.rememberme.IKnownUser;
 import github.soltaufintel.amalia.auth.rememberme.NoOpRememberMe;
+import github.soltaufintel.amalia.auth.simple.SimpleAuthRoutes;
+import github.soltaufintel.amalia.auth.simple.SimpleUserService;
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
 import github.soltaufintel.amalia.web.config.AppConfig;
 import spark.Spark;

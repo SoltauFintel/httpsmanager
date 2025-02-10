@@ -21,8 +21,8 @@ dependencies {
 
 repositories {
     mavenCentral()
-    maven { url 'https://pack.mwvb.de' }
     maven { url 'https://jitpack.io' }
+    maven { url 'https://pack.mwvb.de' }
     maven { url 'https://www.javaxt.com/maven' }
 }
 
